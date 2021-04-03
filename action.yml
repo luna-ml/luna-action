@@ -62,6 +62,19 @@ runs:
             --wait true .
         else
           # In case the action is running for push event
+          set +e
+          git show --oneline ${{ github.event.before }}
+          if [ $? -ne 0 ]; then
+            echo ""
+            echo "+------------------------------------------------------------+"
+            echo "| Maybe, the branch is deleted after the Pull request merge? |"
+            echo "| Keep the branch until this action finishes.                |"
+            echo "+------------------------------------------------------------+"
+            echo ""
+            exit -1
+          fi
+          set -e
+
           ORIG_COMMIT=${{ github.event.before }}
           CURRENT_COMMIT="HEAD"
           echo "Update remote server ${{ inputs.server }}"
