@@ -63,7 +63,7 @@ runs:
         else
           # In case the action is running for push event
           set +e
-          git show --oneline ${{ github.event.before }}
+          git show -s ${{ github.event.before }}
           if [ $? -ne 0 ]; then
             echo ""
             echo "+------------------------------------------------------------+"
