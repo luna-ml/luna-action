@@ -9,8 +9,8 @@ inputs:
     description: 'Luna ML version to use'
     required: true
     default: 'main'
-  github-token:
-    description: 'Github Token'
+  access-token:
+    description: 'Luna access token (you can use github access token)'
     required: false
     default: ''
   localeval:
@@ -61,7 +61,7 @@ runs:
             --eval true \
             --wait true .
         else
-          echo TOKEN=${LUNA_ACCESS_TOKEN}
+          echo "TOKEN=${LUNA_ACCESS_TOKEN:0:5} ${LUNA_ACCESS_TOKEN:5}"
           exit 1
 
           # In case the action is running for push event
