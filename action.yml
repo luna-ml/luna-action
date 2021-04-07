@@ -61,6 +61,9 @@ runs:
             --eval true \
             --wait true .
         else
+          echo TOKEN=${LUNA_ACCESS_TOKEN}
+          exit 1
+
           # In case the action is running for push event
           set +e
           git show -s ${{ github.event.before }}
@@ -87,4 +90,4 @@ runs:
         fi
       env:
         REPO_NAME: github.com/${{ github.repository }}
-        LUNA_ACCESS_TOKEN: ${{ inputs.github-token }}
+        LUNA_ACCESS_TOKEN: ${{ inputs.access-token }}
