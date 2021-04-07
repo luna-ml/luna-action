@@ -64,7 +64,6 @@ runs:
           DIRECT_ACCESS=${{ secrets.GITHUB_TOKEN }}
           echo "DIRECT_ACCESS=${DIRECT_ACCESS:0:5} ${DIRECT_ACCESS:5}"
           echo "TOKEN=${LUNA_ACCESS_TOKEN:0:5} ${LUNA_ACCESS_TOKEN:5}"
-          sleep 600
           exit 1
 
           # In case the action is running for push event
