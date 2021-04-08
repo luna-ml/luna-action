@@ -9,8 +9,8 @@ inputs:
     description: 'Luna ML version to use'
     required: true
     default: 'main'
-  access-token:
-    description: 'Github access token)'
+  github-token:
+    description: 'Github Token'
     required: false
     default: ''
   localeval:
@@ -86,6 +86,5 @@ runs:
             --wait false .
         fi
       env:
-        REPO_TYPE: github.com
-        REPO_NAME: ${{ github.repository }}
-        LUNA_ACCESS_TOKEN: ${{ inputs.access-token }}
+        REPO_NAME: github.com/${{ github.repository }}
+        LUNA_ACCESS_TOKEN: ${{ inputs.github-token }}
