@@ -9,10 +9,10 @@ If you're staring a new leaderboard project, you can start from [Luna project te
 
 ## Usage
 
-Basic
+On pull request build and evaluate in Github action without submitting to remote luna server
 
 ```yaml
-name: Verify, evaluate and score
+name: Evaluate locally
 on: [pull_request]
 jobs:
   luna-ml:
@@ -30,8 +30,32 @@ jobs:
         version: "v0.9.0"
     - uses: luna-ml/luna-action@main
       with:
+        version: 'main'
+```
+
+On sync changes with remote luna server. Remote luna server will automatically trigger evaluation when necessary.
+
+```yaml
+name: Sync changes
+on:
+  push:
+    branches:
+      - main
+jobs:
+  luna-ml:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout latest code
+      uses: actions/checkout@v2
+    - name: Set up Python # This action requires python 3.6 or later
+      uses: actions/setup-python@v2
+      with:
+        python-version: "3.6"
+    - uses: luna-ml/luna-action@main
+      with:
         server: 'https://luna-server'
         version: 'main'
+        access-token: '' # github access token with permissions to the current repository. Can not use ${{ secrets.GITHUB_TOKEN }}
 ```
 
 Optional input parameters
@@ -40,3 +64,5 @@ Optional input parameters
 | ------- | --------- |
 | server | [Luna ML](https://github.com/luna-ml/luna)  server address. e.g. `https://luna-ml.org`. remote server address to sync changes. When the 'server' parameter is not configured, then this action locally run a server and sync with it. Local sync is useful for evaluating new module in pull request |
 | version | [Luna ML](https://github.com/luna-ml/luna) client version to use. Defaults to `main`. |
+| access-token | github access token with permissions to the current repository. This token will be transfered to luna server to validate if request from this github action has access permission to the repository. Therefore, can not use `${{ secrets.GITHUB_TOKEN }}` since it only works inside github action |
+
