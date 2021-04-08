@@ -10,7 +10,7 @@ inputs:
     required: true
     default: 'main'
   access-token:
-    description: 'Luna access token (you can use github access token)'
+    description: 'Github access token)'
     required: false
     default: ''
   localeval:
@@ -61,11 +61,6 @@ runs:
             --eval true \
             --wait true .
         else
-          DIRECT_ACCESS=${{ secrets.GITHUB_TOKEN }}
-          echo "DIRECT_ACCESS=${DIRECT_ACCESS:0:5} ${DIRECT_ACCESS:5}"
-          echo "TOKEN=${LUNA_ACCESS_TOKEN:0:5} ${LUNA_ACCESS_TOKEN:5}"
-          exit 1
-
           # In case the action is running for push event
           set +e
           git show -s ${{ github.event.before }}
@@ -91,5 +86,6 @@ runs:
             --wait false .
         fi
       env:
-        REPO_NAME: github.com/${{ github.repository }}
+        REPO_TYPE: github.com
+        REPO_NAME: ${{ github.repository }}
         LUNA_ACCESS_TOKEN: ${{ inputs.access-token }}

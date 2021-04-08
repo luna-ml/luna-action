@@ -55,7 +55,7 @@ jobs:
       with:
         server: 'https://luna-server'
         version: 'main'
-        access-token: ${{ secrets.GITHUB_TOKEN }}
+        access-token: '' # github access token with permissions to the current repository. Can not use ${{ secrets.GITHUB_TOKEN }}
 ```
 
 Optional input parameters
@@ -64,4 +64,5 @@ Optional input parameters
 | ------- | --------- |
 | server | [Luna ML](https://github.com/luna-ml/luna)  server address. e.g. `https://luna-ml.org`. remote server address to sync changes. When the 'server' parameter is not configured, then this action locally run a server and sync with it. Local sync is useful for evaluating new module in pull request |
 | version | [Luna ML](https://github.com/luna-ml/luna) client version to use. Defaults to `main`. |
-| access-token | when luna server configured to authenticate with github, GITHUB_TOKEN need to be provided. |
+| access-token | github access token with permissions to the current repository. This token will be transfered to luna server to validate if request from this github action has access permission to the repository. Therefore, can not use `${{ secrets.GITHUB_TOKEN }}` since it only works inside github action |
+
