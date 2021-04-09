@@ -1,10 +1,10 @@
 # Luna ML Github action
 
-This Github action helps to verify [Luna ML Leaderboard](https://github.com/luna-ml/luna) projects files, evaluate and score locally on pullrequest. So it can be verified before when a new project or a new model is submitted.
+This Github action helps to verify [Luna ML](https://github.com/luna-ml/luna) projects files, evaluate and score locally on Pull Request. So it can be verified before when a new project or a new model is submitted.
 
-After pullrequest merge, this action sync the changes with Luna ML server.
+After pullrequest merges, this action syncs the changes with the Luna ML server.
 
-If you're staring a new leaderboard project, you can start from [Luna project template](https://github.com/luna-ml/luna-project-template).
+If you're starting a new leaderboard project, you can start from [Luna project template](https://github.com/luna-ml/luna-project-template). See the [Quickstart](https://luna-ml.github.io/luna/quickstart/index.html) guide for more details.
 
 
 ## Usage
