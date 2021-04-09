@@ -2,7 +2,7 @@ name: 'Luna ML action'
 description: 'Sync projects and models from the repository'
 inputs:
   server:  # id of input
-    description: 'Luna ML server URL (e.g. https://some.domain.com'
+    description: 'Luna ML server URL (e.g. https://some.domain.com)'
     required: true
     default: 'http://localhost:5000'
   version:
@@ -10,7 +10,7 @@ inputs:
     required: true
     default: 'main'
   access-token:
-    description: 'Github access token)'
+    description: 'Github access token'
     required: false
     default: ''
   localeval:
@@ -30,7 +30,7 @@ runs:
         pip install -q -r requirements.txt
         pip install -e .
 
-        if [ "${{ inputs.server }}" == "http://localhost:5000" ]; then
+        if [ "${{ github.event_name }}" == "pull_request" ]; then
           # when server adddress is localhost, start local a server
           nohup ./run_dev_server.sh &
 
@@ -61,7 +61,6 @@ runs:
             --eval true \
             --wait true .
         elif [ "${{ github.event_name }}" == "push" ]; then
-          In case the action is running for push event
           set +e
           git show -s ${{ github.event.before }}
           if [ $? -ne 0 ]; then
