@@ -40,10 +40,10 @@ runs:
     - name: Sync
       shell: bash
       run: |
-        echo "git fetch origin $GITHUB_BASE_REF"
-        git fetch origin $GITHUB_BASE_REF
+        if [ "${{ github.event_name }}" == "pull_request" ]; then
+          echo "git fetch origin $GITHUB_BASE_REF"
+          git fetch origin $GITHUB_BASE_REF
 
-        if [ "${{ inputs.server }}" == "http://localhost:5000" ]; then        
           # sync with local server
           ORIG_COMMIT="origin/$GITHUB_BASE_REF"
           CURRENT_COMMIT="HEAD"
@@ -60,15 +60,16 @@ runs:
             --dry-run false \
             --eval true \
             --wait true .
-        else
-          # In case the action is running for push event
+        elif [ "${{ github.event_name }}" == "push" ]; then
+          In case the action is running for push event
           set +e
           git show -s ${{ github.event.before }}
           if [ $? -ne 0 ]; then
             echo ""
             echo "+------------------------------------------------------------+"
-            echo "| Maybe, the branch is deleted after the Pull request merge? |"
-            echo "| Keep the branch until this action finishes.                |"
+            echo "| Maybe, the branch is deleted after the Pull request merge, |"
+            echo "| or pushed directly without making Pull request?            |"
+            echo "| Please keep the branch until this action finishes.         |"
             echo "+------------------------------------------------------------+"
             echo ""
             exit -1
@@ -84,6 +85,9 @@ runs:
             --dry-run false \
             --eval true \
             --wait false .
+        else
+          echo "Event ${{ github.event_name }} is not supported"
+          exit 1
         fi
       env:
         REPO_TYPE: github.com
