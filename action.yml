@@ -42,14 +42,14 @@ runs:
           # print task pod logs
           curl -s -L -O https://github.com/wercker/stern/releases/download/1.11.0/stern_linux_amd64
           chmod +x stern_linux_amd64
-          ./stern_linux_amd64 -l task.luna-ml/type &
+          ./stern_linux_amd64 -n default '.*' &
 
           echo "Evaluate locally"
           luna-ml --server ${{ inputs.server }} sync \
             --orig_commit "$ORIG_COMMIT" \
             --current_commit "$CURRENT_COMMIT" \
-            --dry-run true \
-            --eval true \
+            --dry-run false \
+            --eval local \
             --wait true .
         elif [ "${{ github.event_name }}" == "push" ]; then
           set +e
