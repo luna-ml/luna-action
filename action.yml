@@ -31,10 +31,10 @@ runs:
     - name: Sync
       shell: bash
       run: |
-        if [ "${{ github.event_name }}" == "pull_request" ]; then
-          echo "git fetch origin $GITHUB_BASE_REF"
-          git fetch origin $GITHUB_BASE_REF
+        echo "git fetch origin $GITHUB_BASE_REF"
+        git fetch origin $GITHUB_BASE_REF
 
+        if [ "${{ github.event_name }}" == "pull_request" ]; then
           # sync with local server
           ORIG_COMMIT="origin/$GITHUB_BASE_REF"
           CURRENT_COMMIT="HEAD"
