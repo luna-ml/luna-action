@@ -3,12 +3,12 @@ description: 'Sync projects and models from the repository'
 inputs:
   server:  # id of input
     description: 'Luna ML server URL (e.g. https://some.domain.com)'
-    required: true
-    default: 'http://localhost:5000'
+    required: false
+    default: 'https://luna.staroid.com'
   version:
-    description: 'Luna ML version to use'
-    required: true
-    default: 'main'
+    description: 'Luna ML Client version to use'
+    required: false
+    default: 'v0.1.9'
   access-token:
     description: 'Github access token'
     required: false
@@ -16,27 +16,14 @@ inputs:
   localeval:
     description: 'Evaluate locally'
     required: false
-    default: 'false'    
+    default: 'false'
 runs:
   using: "composite"
   steps:
     - name: Install Latest Luna ML package
       shell: bash
       run: |
-        cd /tmp
-        git clone https://github.com/luna-ml/luna.git
-        cd /tmp/luna
-        git checkout ${{ inputs.version }}
-        pip install -q -r requirements.txt
-        pip install -e .
-
-        if [ "${{ github.event_name }}" == "pull_request" ]; then
-          # when server adddress is localhost, start local a server
-          nohup ./run_dev_server.sh &
-
-          # wait for server to start
-          curl -s --retry 10 --retry-delay 2 --retry-connrefused localhost:5000/health
-        fi
+        pip install luna-ml==${{ inputs.version }}
     - name: Sync
       shell: bash
       run: |
@@ -57,7 +44,7 @@ runs:
           luna-ml --server ${{ inputs.server }} sync \
             --orig_commit "$ORIG_COMMIT" \
             --current_commit "$CURRENT_COMMIT" \
-            --dry-run false \
+            --dry-run true \
             --eval true \
             --wait true .
         elif [ "${{ github.event_name }}" == "push" ]; then
