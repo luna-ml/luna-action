@@ -8,7 +8,7 @@ inputs:
   version:
     description: 'Luna ML Client version to use'
     required: false
-    default: 'v0.1.9'
+    default: ''
   access-token:
     description: 'Github access token'
     required: false
@@ -23,7 +23,11 @@ runs:
     - name: Install Latest Luna ML package
       shell: bash
       run: |
-        pip install luna-ml==${{ inputs.version }}
+        if [ "${{ inputs.version }}" == "" ]; then
+          pip install luna-ml
+        else
+          pip install luna-ml==${{ inputs.version }}
+        fi
     - name: Sync
       shell: bash
       run: |
